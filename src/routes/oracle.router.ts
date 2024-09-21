@@ -48,7 +48,11 @@ tokenPairRouter
 
 dataSourceRouter
   .route('/')
-  .post(requestValidatorMiddleware, asyncErrorHandler(addDataSource));
+  .post(
+    body('dataSourceId').isString().isIn(Object.values(DataSources)),
+    requestValidatorMiddleware,
+    asyncErrorHandler(addDataSource),
+  );
 
 dataSourceRouter
   .route('/:dataSourceId')
