@@ -25,6 +25,8 @@ tokenPairRouter.use('/:tokenPairId/data-source', dataSourceRouter);
 
 oracleRouter.get('/available-data-sources', asyncErrorHandler(viewDataSources));
 
+// TODO: Move to 3 separate files?
+
 tokenPairRouter
   .route('/')
   .get(asyncErrorHandler(viewTokenPairs))
@@ -37,7 +39,11 @@ tokenPairRouter
 
 tokenPairRouter
   .route('/:tokenPairId')
-  .patch(requestValidatorMiddleware, asyncErrorHandler(updateTokenPair))
+  .patch(
+    body('dataSources').isArray().isIn(Object.values(DataSources)),
+    requestValidatorMiddleware,
+    asyncErrorHandler(updateTokenPair),
+  )
   .delete(requestValidatorMiddleware, asyncErrorHandler(deleteTokenPair));
 
 dataSourceRouter

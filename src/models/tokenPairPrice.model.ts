@@ -4,13 +4,14 @@ import { ITokenPairPrice } from '../interfaces/tokenPairPrice.interface';
 
 const TokenPairPriceSchema = new Schema<ITokenPairPrice>(
   {
-    pair: { type: String, required: true, unique: true },
+    tokenPairId: { type: Schema.Types.ObjectId, required: true },
     dataSource: { type: String, required: true, enum: DataSources },
+    price: { type: Number, required: true },
   },
   { timestamps: true },
 );
 
 export const TokenPairPrice: Model<ITokenPairPrice> = mongoose.model(
-  'TokenPair',
+  'TokenPairPrice',
   TokenPairPriceSchema,
 );
