@@ -1,6 +1,9 @@
-import { DATA_SOURCE_BINANCE_ID, DATA_SOURCE_UNISWAP_ID } from './consts';
+import {
+  DATA_SOURCE_COINBASE_ID,
+  DATA_SOURCE_CRYPTO_COMPARE_ID,
+} from './consts';
 
 export enum DataSources {
-  uniswap = DATA_SOURCE_UNISWAP_ID,
-  binance = DATA_SOURCE_BINANCE_ID,
+  cryptoCompare = DATA_SOURCE_CRYPTO_COMPARE_ID,
+  coinbase = DATA_SOURCE_COINBASE_ID,
 }

@@ -5,6 +5,7 @@ configDotenv();
 import { APP_PORT, MONGO_DB_URL, REDIS_URL } from './settings';
 import { app } from './express';
 import { createClient } from 'redis';
+import { setupBackgroundTasks } from './utils/setupBackgroundTasks';
 
 export const redisClient = createClient({ url: REDIS_URL });
 
@@ -17,6 +18,10 @@ async function main() {
     console.log('Connecting to Redis...');
     await redisClient.connect();
     console.log('Connected to Redis!');
+
+    console.log('Registering queue and worker...');
+    await setupBackgroundTasks();
+    console.log('Queue and worker registered!');
 
     app.listen(APP_PORT, () => {
       console.log(`Listening on port ${APP_PORT}...`);

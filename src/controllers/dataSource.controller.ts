@@ -3,6 +3,13 @@ import { DataSources } from '../../common/enums';
 import { TokenPair } from '../models/tokenPair.model';
 import { NotFoundError } from '../errors/not-found.error';
 import { TokenPairPrice } from '../models/tokenPairPrice.model';
+import { FetchPriceService } from '../services/fetchPrice.service';
+
+export async function refreshPrices(req: Request, res: Response) {
+  const service = new FetchPriceService();
+  await service.fetchPrices();
+  res.status(200).json({ message: 'Prices have been refreshed successfully!' });
+}
 
 export async function viewDataSources(req: Request, res: Response) {
   res.status(200).json({ dataSources: DataSources });

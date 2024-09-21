@@ -23,6 +23,20 @@ export const MONGO_DB_URL = `mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_POR
 
 // Redis
 
-const REDIS_HOST = process.env.REDIS_HOST || 'localhost';
-const REDIS_PORT = process.env.REDIS_PORT || '6378';
+export const REDIS_HOST = process.env.REDIS_HOST || 'localhost';
+export const REDIS_PORT = parseInt(process.env.REDIS_PORT || '6378');
 export const REDIS_URL = `redis://${REDIS_HOST}:${REDIS_PORT}`;
+
+// BullMQ
+
+export const BULLMQ_REDIS_SETTINGS = {
+  connection: {
+    host: REDIS_HOST,
+    port: REDIS_PORT,
+  },
+};
+export const BULLMQ_QUEUE_NAME = process.env.BULLMQ_QUEUE_NAME || 'fetchQueue';
+export const BULLMQ_FETCH_PRICES_JOB_NAME =
+  process.env.BULLMQ_FETCH_PRICES_JOB_NAME || 'fetchPrices';
+export const BULLMQ_JOB_INTERVAL_IN_SECS =
+  process.env.BULLMQ_JOB_INTERVAL_IN_SECS || 30;

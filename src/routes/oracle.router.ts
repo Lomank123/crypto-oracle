@@ -10,6 +10,7 @@ import { asyncErrorHandler } from '../utils/async-error-handler';
 import {
   addDataSource,
   deleteDataSource,
+  refreshPrices,
   viewDataSources,
 } from '../controllers/dataSource.controller';
 import { body } from 'express-validator';
@@ -24,6 +25,7 @@ oracleRouter.use('/token-pair', tokenPairRouter);
 tokenPairRouter.use('/:tokenPairId/data-source', dataSourceRouter);
 
 oracleRouter.get('/available-data-sources', asyncErrorHandler(viewDataSources));
+oracleRouter.post('/refresh-prices', asyncErrorHandler(refreshPrices));
 
 // TODO: Move to 3 separate files?
 
