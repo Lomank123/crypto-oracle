@@ -1,4 +1,9 @@
 import { Request, Response } from 'express';
+import { DataSources } from '../../common/enums';
+
+export async function viewDataSources(req: Request, res: Response) {
+  res.status(200).json({ dataSources: DataSources });
+}
 
 export async function addDataSource(req: Request, res: Response) {
   res

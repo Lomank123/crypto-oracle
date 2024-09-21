@@ -5,12 +5,12 @@ import { DataSources } from '../../common/enums';
 const TokenPairSchema = new Schema<ITokenPair>(
   {
     pair: { type: String, required: true, unique: true },
-    dataSources: { array: { type: String, required: true, enum: DataSources } },
+    dataSources: { type: [String], required: true, enum: DataSources },
   },
   { timestamps: true },
 );
 
-export const TokenPairModel: Model<ITokenPair> = mongoose.model(
+export const TokenPair: Model<ITokenPair> = mongoose.model(
   'TokenPair',
   TokenPairSchema,
 );

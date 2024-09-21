@@ -1,12 +1,21 @@
 import { Request, Response } from 'express';
+import { TokenPair } from '../models/tokenPair.model';
+import { ITokenPair } from '../interfaces/tokenPair.interface';
 
 export async function viewTokenPairs(req: Request, res: Response) {
   res.status(200).json({ tokenPairs: [] });
 }
 
 export async function addTokenPair(req: Request, res: Response) {
-  // TODO: Validate input format: BTC/ETH. Use regex
-  res.status(201).json({ message: 'Token pair created!' });
+  const tokenPair: ITokenPair = await TokenPair.create({
+    pair: req.body.pair,
+    dataSources: req.body.dataSources,
+  });
+
+  // TODO: Handle duplicate error
+  // TODO: Remove extra fields from response (MongoDB related ones)
+
+  res.status(201).json(tokenPair.toJSON());
 }
 
 export async function deleteTokenPair(req: Request, res: Response) {

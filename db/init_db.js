@@ -8,6 +8,7 @@ db.createUser({
   roles: [{ role: 'readWrite', db: env.DB_NAME }],
 });
 
-db.createCollection('urls');
+db.createCollection('tokenpairs');
+db.createCollection('tokenpairprices');
 
 console.log('DB setup finished successfully!');

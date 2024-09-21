@@ -10,7 +10,11 @@ import { asyncErrorHandler } from '../utils/async-error-handler';
 import {
   addDataSource,
   deleteDataSource,
+  viewDataSources,
 } from '../controllers/dataSource.controller';
+import { body } from 'express-validator';
+import { TOKEN_PAIR_REGEX } from '../../common/consts';
+import { DataSources } from '../../common/enums';
 
 export const oracleRouter = Router();
 const tokenPairRouter = Router();
@@ -19,10 +23,17 @@ const dataSourceRouter = Router({ mergeParams: true });
 oracleRouter.use('/token-pair', tokenPairRouter);
 tokenPairRouter.use('/:tokenPairId/data-source', dataSourceRouter);
 
+oracleRouter.get('/available-data-sources', asyncErrorHandler(viewDataSources));
+
 tokenPairRouter
   .route('/')
   .get(asyncErrorHandler(viewTokenPairs))
-  .post(requestValidatorMiddleware, asyncErrorHandler(addTokenPair));
+  .post(
+    body('pair').isString().notEmpty().matches(TOKEN_PAIR_REGEX),
+    body('dataSources').isArray().isIn(Object.values(DataSources)),
+    requestValidatorMiddleware,
+    asyncErrorHandler(addTokenPair),
+  );
 
 tokenPairRouter
   .route('/:tokenPairId')
@@ -36,11 +47,3 @@ dataSourceRouter
 dataSourceRouter
   .route('/:dataSourceId')
   .delete(requestValidatorMiddleware, asyncErrorHandler(deleteDataSource));
-
-// urlRouter.post(
-//   '/',
-//   body('url').isString().isURL(),
-//   requestValidatorMiddleware,
-//   asyncErrorHandler(generateShortUrlController),
-// );
-// urlRouter.get('/:shortHash', asyncErrorHandler(redirectFromShortUrlController));

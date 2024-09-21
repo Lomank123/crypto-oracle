@@ -10,7 +10,7 @@ const TokenPairPriceSchema = new Schema<ITokenPairPrice>(
   { timestamps: true },
 );
 
-export const TokenPairPriceModel: Model<ITokenPairPrice> = mongoose.model(
+export const TokenPairPrice: Model<ITokenPairPrice> = mongoose.model(
   'TokenPair',
   TokenPairPriceSchema,
 );
