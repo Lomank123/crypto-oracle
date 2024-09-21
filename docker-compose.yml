@@ -1,0 +1,46 @@
+services:
+#  oracle-api:
+#    build: .
+#    container_name: oracle-api
+#    env_file:
+#      - .env
+#    restart: always
+#    ports:
+#      - '${APP_PORT}:8000'
+#    volumes:
+#      - .:/app
+#    networks:
+#      - oracle-network
+
+  oracle-db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    container_name: oracle-db
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - '${DB_PORT}:27017'
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - oracle-network
+
+  oracle-redis:
+    container_name: oracle-redis
+    restart: always
+    env_file:
+      - .env
+    image: redis/redis-stack-server
+    ports:
+      - '${REDIS_PORT}:6379'
+    networks:
+      - oracle-network
+
+volumes:
+  mongo-data:
+
+networks:
+  oracle-network:
+    external: true
