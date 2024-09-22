@@ -6,10 +6,13 @@ export const APP_PORT = parseInt(process.env.APP_PORT || '3033');
 export const LAST_CHECKED_DELTA_IN_MINS = parseInt(
   process.env.LAST_CHECKED_DELTA_IN_MINS || '10',
 );
+export const UNRELIABLE_PRICES_PERCENTAGE_LIMIT = parseInt(
+  process.env.UNRELIABLE_PRICES_PERCENTAGE_LIMIT || '30',
+);
 
 // CORS
 
-const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000';
+const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3033';
 export const CORS_OPTIONS = {
   origin: CORS_ORIGIN,
   optionsSuccessStatus: 200,

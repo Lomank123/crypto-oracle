@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
 import { DataSources } from '../enums';
 import { TokenPairService } from '../services/tokenPairService';
+import { DataSourceService } from '../services/dataSource.service';
 
 export async function viewDataSources(req: Request, res: Response) {
-  // TODO: Add reliability flag to each data source based on prices
-  res.status(200).json({ dataSources: DataSources });
+  const service = new DataSourceService();
+  const dataSources = await service.getDataSources();
+  res.status(200).json(dataSources);
 }
 
 export async function addDataSource(req: Request, res: Response) {
