@@ -1,6 +1,6 @@
 import mongoose, { Model, Schema } from 'mongoose';
 import { ITokenPair } from '../interfaces/tokenPair.interface';
-import { DataSources } from '../../common/enums';
+import { DataSources } from '../enums';
 
 const TokenPairSchema = new Schema<ITokenPair>(
   {

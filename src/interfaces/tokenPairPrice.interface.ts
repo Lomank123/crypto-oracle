@@ -1,5 +1,5 @@
 import { IDocument } from './document.interface';
-import { DataSources } from '../../common/enums';
+import { DataSources } from '../enums';
 import mongoose from 'mongoose';
 
 export interface ITokenPairPrice extends IDocument {

@@ -1,5 +1,5 @@
 import mongoose, { Model, Schema } from 'mongoose';
-import { DataSources } from '../../common/enums';
+import { DataSources } from '../enums';
 import { ITokenPairPrice } from '../interfaces/tokenPairPrice.interface';
 
 const TokenPairPriceSchema = new Schema<ITokenPairPrice>(

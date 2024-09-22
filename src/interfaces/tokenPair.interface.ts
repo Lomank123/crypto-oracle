@@ -1,5 +1,5 @@
 import { IDocument } from './document.interface';
-import { DataSources } from '../../common/enums';
+import { DataSources } from '../enums';
 
 export interface ITokenPair extends IDocument {
   pair: string;

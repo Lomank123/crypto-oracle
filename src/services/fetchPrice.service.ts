@@ -1,5 +1,5 @@
 import { TokenPair } from '../models/tokenPair.model';
-import { DataSources } from '../../common/enums';
+import { DataSources } from '../enums';
 import { IDataSourceService } from '../interfaces/dataSourceService.interface';
 import { CryptoCompareDataSourceService } from './dataSource/cryptoCompareDataSource.service';
 import { CoinbaseDataSourceService } from './dataSource/coinbaseDataSource.service';

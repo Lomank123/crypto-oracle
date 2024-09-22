@@ -15,8 +15,8 @@ import {
   viewDataSources,
 } from '../controllers/dataSource.controller';
 import { body } from 'express-validator';
-import { TOKEN_PAIR_REGEX } from '../../common/consts';
-import { DataSources } from '../../common/enums';
+import { TOKEN_PAIR_REGEX } from '../consts';
+import { DataSources } from '../enums';
 
 export const oracleRouter = Router();
 const tokenPairRouter = Router();

@@ -5,7 +5,10 @@ configDotenv();
 import { APP_PORT, MONGO_DB_URL, REDIS_URL } from './settings';
 import { app } from './express';
 import { createClient } from 'redis';
-import { setupBackgroundTasks } from './utils/setupBackgroundTasks';
+import {
+  bullmqQueue,
+  setupBackgroundTasks,
+} from './utils/setupBackgroundTasks';
 
 export const redisClient = createClient({ url: REDIS_URL });
 
@@ -35,6 +38,7 @@ process.on('SIGINT', async () => {
   console.log('\nShutting down gracefully...');
   await mongoose.disconnect();
   await redisClient.disconnect();
+  await bullmqQueue.obliterate();
   process.exit();
 });
 

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { DataSources } from '../../common/enums';
+import { DataSources } from '../enums';
 import { TokenPair } from '../models/tokenPair.model';
 import { NotFoundError } from '../errors/not-found.error';
 import { TokenPairPrice } from '../models/tokenPairPrice.model';
