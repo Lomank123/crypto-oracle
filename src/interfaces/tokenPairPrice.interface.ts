@@ -6,4 +6,8 @@ export interface ITokenPairPrice extends IDocument {
   tokenPairId: mongoose.Schema.Types.ObjectId;
   dataSource: DataSources;
   price: number;
+
+  // For validity check
+  lastCheckedAt: Date;
+  isOutOfBounds: boolean;
 }

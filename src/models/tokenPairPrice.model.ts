@@ -7,6 +7,8 @@ const TokenPairPriceSchema = new Schema<ITokenPairPrice>(
     tokenPairId: { type: Schema.Types.ObjectId, required: true },
     dataSource: { type: String, required: true, enum: DataSources },
     price: { type: Number, required: true },
+    lastCheckedAt: { type: Date, required: true },
+    isOutOfBounds: { type: Boolean, default: false },
   },
   { timestamps: true },
 );
