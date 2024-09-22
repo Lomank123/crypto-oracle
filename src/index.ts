@@ -8,7 +8,7 @@ import { createClient } from 'redis';
 import {
   bullmqQueue,
   setupBackgroundTasks,
-} from './utils/setupBackgroundTasks';
+} from './utils/setupBackgroundTasks.util';
 
 export const redisClient = createClient({ url: REDIS_URL });
 

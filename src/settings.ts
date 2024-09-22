@@ -29,6 +29,9 @@ export const MONGO_DB_URL = `mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_POR
 export const REDIS_HOST = process.env.REDIS_HOST || 'localhost';
 export const REDIS_PORT = parseInt(process.env.REDIS_PORT || '6378');
 export const REDIS_URL = `redis://${REDIS_HOST}:${REDIS_PORT}`;
+export const REDIS_CACHE_EXPIRATION_IN_SECS = parseInt(
+  process.env.REDIS_CACHE_EXPIRATION_IN_SECS || '60',
+);
 
 // BullMQ
 
