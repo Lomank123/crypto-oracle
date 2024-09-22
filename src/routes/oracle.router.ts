@@ -3,6 +3,7 @@ import {
   addTokenPair,
   deleteTokenPair,
   updateTokenPair,
+  viewTokenPairPrice,
   viewTokenPairs,
 } from '../controllers/tokenPair.controller';
 import { requestValidatorMiddleware } from '../middlewares/request-validator.middleware';
@@ -40,6 +41,10 @@ tokenPairRouter
   );
 
 tokenPairRouter
+  .route('/price/:tokenPair')
+  .get(asyncErrorHandler(viewTokenPairPrice));
+
+tokenPairRouter
   .route('/:tokenPairId')
   .patch(
     body('dataSources').isArray().isIn(Object.values(DataSources)),
@@ -58,4 +63,4 @@ dataSourceRouter
 
 dataSourceRouter
   .route('/:dataSourceId')
-  .delete(requestValidatorMiddleware, asyncErrorHandler(deleteDataSource));
+  .delete(asyncErrorHandler(deleteDataSource));

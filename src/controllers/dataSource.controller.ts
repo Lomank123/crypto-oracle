@@ -12,6 +12,7 @@ export async function refreshPrices(req: Request, res: Response) {
 }
 
 export async function viewDataSources(req: Request, res: Response) {
+  // TODO: Add reliability flag to each data source based on prices
   res.status(200).json({ dataSources: DataSources });
 }
 

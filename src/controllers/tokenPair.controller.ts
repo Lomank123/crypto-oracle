@@ -4,6 +4,10 @@ import { ITokenPair } from '../interfaces/tokenPair.interface';
 import { TokenPairPrice } from '../models/tokenPairPrice.model';
 import { NotFoundError } from '../errors/not-found.error';
 import { MongoServerError } from 'mongodb';
+import { ITokenPairPrice } from '../interfaces/tokenPairPrice.interface';
+import { LAST_CHECKED_DELTA_IN_MINS } from '../settings';
+import { medianPrice } from '../utils/utils';
+import { redisClient } from '../index';
 
 export async function viewTokenPairs(req: Request, res: Response) {
   const tokenPairs = await TokenPair.aggregate([
@@ -17,6 +21,45 @@ export async function viewTokenPairs(req: Request, res: Response) {
     },
   ]);
   res.status(200).json(tokenPairs);
+}
+
+export async function viewTokenPairPrice(req: Request, res: Response) {
+  const pair = req.params.tokenPair.replace('-', '/');
+  const tokenPair: ITokenPair | null = await TokenPair.findOne({ pair }).exec();
+
+  if (!tokenPair) {
+    throw new NotFoundError('Pair not found.');
+  }
+
+  const cachedData = await redisClient.get(tokenPair.id);
+
+  if (cachedData) {
+    console.log('CACHE HIT!!!');
+    res.status(200).json(JSON.parse(cachedData));
+    return;
+  }
+
+  const tokenPairPrices: ITokenPairPrice[] = await TokenPairPrice.find({
+    tokenPairId: tokenPair.id,
+    isOutOfBounds: false,
+    lastCheckedAt: {
+      $gt: new Date(Date.now() - LAST_CHECKED_DELTA_IN_MINS * 60 * 1000),
+    },
+  })
+    .sort('price')
+    .exec();
+
+  if (!tokenPairPrices.length) {
+    res.status(200).json({ pair: tokenPair.pair, price: -1 });
+    return;
+  }
+
+  // TODO: Move logic to services/utils
+  const median = medianPrice(tokenPairPrices);
+  const responseData = { pair: tokenPair.pair, price: median };
+
+  await redisClient.set(tokenPair.id, JSON.stringify(responseData), { EX: 60 });
+  res.status(200).json(responseData);
 }
 
 export async function addTokenPair(req: Request, res: Response) {

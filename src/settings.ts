@@ -3,6 +3,9 @@ import * as process from 'node:process';
 // Main
 
 export const APP_PORT = parseInt(process.env.APP_PORT || '3033');
+export const LAST_CHECKED_DELTA_IN_MINS = parseInt(
+  process.env.LAST_CHECKED_DELTA_IN_MINS || '10',
+);
 
 // CORS
 
@@ -38,5 +41,6 @@ export const BULLMQ_REDIS_SETTINGS = {
 export const BULLMQ_QUEUE_NAME = process.env.BULLMQ_QUEUE_NAME || 'fetchQueue';
 export const BULLMQ_FETCH_PRICES_JOB_NAME =
   process.env.BULLMQ_FETCH_PRICES_JOB_NAME || 'fetchPrices';
-export const BULLMQ_JOB_INTERVAL_IN_SECS =
-  process.env.BULLMQ_JOB_INTERVAL_IN_SECS || 30;
+export const BULLMQ_JOB_INTERVAL_IN_SECS = parseInt(
+  process.env.BULLMQ_JOB_INTERVAL_IN_SECS || '30',
+);

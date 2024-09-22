@@ -14,17 +14,18 @@ export class FetchPriceService {
       for (const dataSource of tokenPair.dataSources) {
         const DataSourceService = this.dataSourceFactory(dataSource);
 
-        // TODO: Use Promise.all() to fetch.
-        //  Then try bulk upsert (if possible)
+        // TODO: Use Promise.all() to fetch. Then try bulk upsert (if possible)
         try {
           const price = await DataSourceService.fetchPrice(tokenPair.pair);
           await TokenPairPrice.findOneAndUpdate(
             {
               tokenPairId: tokenPair.id,
               dataSource: dataSource,
+            },
+            {
+              price: price,
               lastCheckedAt: new Date(),
             },
-            { price: price },
             { upsert: true },
           );
         } catch (err) {
@@ -32,7 +33,6 @@ export class FetchPriceService {
         }
       }
 
-      // TODO: Test properly
       // Check which prices fall out of bounds
       await this.updatePricesValidity(tokenPair);
     }
@@ -52,16 +52,23 @@ export class FetchPriceService {
   async updatePricesValidity(tokenPair: ITokenPair) {
     const tokenPairPrices = await TokenPairPrice.find({
       tokenPairId: tokenPair.id,
-    }).exec();
+    })
+      .sort('price')
+      .exec();
     const length = tokenPairPrices.length;
+
+    if (length < 2) {
+      return;
+    }
 
     // IQR calculation
     const q1 = tokenPairPrices[Math.floor(length / 4)]; // 25%
     const q3 = tokenPairPrices[Math.floor((length * 3) / 4)]; // 75%
     const iqr = q3.price - q1.price;
+
     // Tukey’s fences
     const k = 1.5;
-    // Can use 0 instead since prices can't be < 0
+    // Can be negative in certain scenarios
     const lowerBound = q1.price - k * iqr;
     const upperBound = q3.price + k * iqr;
 
