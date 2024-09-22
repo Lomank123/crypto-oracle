@@ -1,5 +1,3 @@
-// TODO: Move to /src ?
-
 export const DATA_SOURCE_CRYPTO_COMPARE_ID = 'crypto-compare';
 export const DATA_SOURCE_COINBASE_ID = 'coinbase';
 

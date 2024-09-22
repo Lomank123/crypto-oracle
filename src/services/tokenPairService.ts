@@ -54,6 +54,7 @@ export class TokenPairService {
     }
 
     await TokenPairPrice.deleteMany({ tokenPairId: tokenPair.id });
+    await redisClient.del(tokenPair.id);
     await tokenPair.deleteOne();
   }
 
@@ -85,6 +86,8 @@ export class TokenPairService {
       });
     }
 
+    await redisClient.del(tokenPair.id);
+
     return tokenPair;
   }
 
@@ -102,8 +105,6 @@ export class TokenPairService {
       const cachedData = await redisClient.get(tokenPair.id);
 
       if (cachedData) {
-        // TODO: Remove
-        console.log('CACHE HIT!!!');
         return JSON.parse(cachedData);
       }
     } catch (err) {
@@ -163,6 +164,8 @@ export class TokenPairService {
     tokenPair.dataSources.push(dataSource);
     await tokenPair.save();
 
+    await redisClient.del(tokenPair.id);
+
     return tokenPair;
   }
 
@@ -182,6 +185,7 @@ export class TokenPairService {
         dataSource: dataSource,
       });
       await tokenPair.save();
+      await redisClient.del(tokenPair.id);
     }
   }
 }
