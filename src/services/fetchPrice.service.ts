@@ -14,7 +14,7 @@ export class FetchPriceService {
       for (const dataSource of tokenPair.dataSources) {
         const DataSourceService = this.dataSourceFactory(dataSource);
 
-        // TODO: Use Promise.all() to fetch. Then try bulk upsert (if possible)
+        // Note: Use Promise.all() to fetch. Then use bulk upsert
         try {
           const price = await DataSourceService.fetchPrice(tokenPair.pair);
           await TokenPairPrice.findOneAndUpdate(
@@ -72,7 +72,7 @@ export class FetchPriceService {
     const lowerBound = q1.price - k * iqr;
     const upperBound = q3.price + k * iqr;
 
-    // TODO: Can be optimized (updateMany with right condition)
+    // Note: Can be optimized (updateMany with right condition)
     for (const tokenPairPrice of tokenPairPrices) {
       const price = tokenPairPrice.price;
       tokenPairPrice.isOutOfBounds = price < lowerBound || price > upperBound;

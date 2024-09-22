@@ -112,7 +112,7 @@ export class TokenPairService {
       console.error('Error occurred when accessing cache');
     }
 
-    // TODO: Try to query only price field
+    // Note: Query only price field
     const tokenPairPrices: ITokenPairPrice[] = await TokenPairPrice.find({
       tokenPairId: tokenPair.id,
       isOutOfBounds: false,
