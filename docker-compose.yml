@@ -1,16 +1,19 @@
 services:
-#  oracle-api:
-#    build: .
-#    container_name: oracle-api
-#    env_file:
-#      - .env
-#    restart: always
-#    ports:
-#      - '${APP_PORT}:8000'
-#    volumes:
-#      - .:/app
-#    networks:
-#      - oracle-network
+  oracle-api:
+    build: .
+    container_name: oracle-api
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - '${APP_PORT}:3033'
+    volumes:
+      - .:/app
+    networks:
+      - oracle-network
+    depends_on:
+      - oracle-db
+      - oracle-redis
 
   oracle-db:
     build:
