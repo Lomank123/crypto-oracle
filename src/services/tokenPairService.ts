@@ -50,7 +50,7 @@ export class TokenPairService {
       await TokenPair.findById(tokenPairId).exec();
 
     if (!tokenPair) {
-      throw new NotFoundError('Pair not found.');
+      return;
     }
 
     await TokenPairPrice.deleteMany({ tokenPairId: tokenPair.id });
@@ -145,5 +145,43 @@ export class TokenPairService {
     }
 
     return result;
+  }
+
+  async addDataSource(
+    tokenPairId: string,
+    dataSource: DataSources,
+  ): Promise<ITokenPair> {
+    const tokenPair = await TokenPair.findById(tokenPairId).exec();
+
+    if (!tokenPair) {
+      throw new NotFoundError('Pair not found.');
+    }
+    if (tokenPair.dataSources.includes(dataSource)) {
+      throw new BadRequestError('Data source already exists');
+    }
+
+    tokenPair.dataSources.push(dataSource);
+    await tokenPair.save();
+
+    return tokenPair;
+  }
+
+  async deleteDataSource(tokenPairId: string, dataSource: DataSources) {
+    const tokenPair = await TokenPair.findById(tokenPairId).exec();
+
+    if (!tokenPair) {
+      return;
+    }
+
+    if (tokenPair.dataSources.includes(dataSource)) {
+      tokenPair.dataSources = tokenPair.dataSources.filter(
+        (tokenPairDataSource) => tokenPairDataSource !== dataSource,
+      );
+      await TokenPairPrice.deleteMany({
+        tokenPairId: tokenPair.id,
+        dataSource: dataSource,
+      });
+      await tokenPair.save();
+    }
   }
 }

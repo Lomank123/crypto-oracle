@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 import { DataSources } from '../enums';
-import { TokenPair } from '../models/tokenPair.model';
-import { NotFoundError } from '../errors/notFound.error';
-import { TokenPairPrice } from '../models/tokenPairPrice.model';
+import { TokenPairService } from '../services/tokenPairService';
 
 export async function viewDataSources(req: Request, res: Response) {
   // TODO: Add reliability flag to each data source based on prices
@@ -10,44 +8,19 @@ export async function viewDataSources(req: Request, res: Response) {
 }
 
 export async function addDataSource(req: Request, res: Response) {
-  const tokenPair = await TokenPair.findById(req.params.tokenPairId).exec();
-
-  if (!tokenPair) {
-    throw new NotFoundError('Pair not found.');
-  }
-
-  const dataSourceId = req.body.dataSourceId;
-
-  if (tokenPair.dataSources.includes(dataSourceId)) {
-    res.status(400).json({ message: 'Data source already exists' });
-    return;
-  }
-
-  tokenPair.dataSources.push(dataSourceId);
-  await tokenPair.save();
-
+  const service = new TokenPairService();
+  const tokenPair = await service.addDataSource(
+    req.params.tokenPairId,
+    req.body.dataSourceId,
+  );
   res.status(200).json(tokenPair);
 }
 
 export async function deleteDataSource(req: Request, res: Response) {
-  const tokenPair = await TokenPair.findById(req.params.tokenPairId).exec();
-
-  if (!tokenPair) {
-    throw new NotFoundError('Pair not found.');
-  }
-
-  const dataSourceId = req.params.dataSourceId as DataSources;
-
-  if (tokenPair.dataSources.includes(dataSourceId)) {
-    tokenPair.dataSources = tokenPair.dataSources.filter(
-      (dataSource) => dataSource !== dataSourceId,
-    );
-    await TokenPairPrice.deleteMany({
-      tokenPairId: tokenPair.id,
-      dataSource: dataSourceId,
-    });
-    await tokenPair.save();
-  }
-
+  const service = new TokenPairService();
+  await service.deleteDataSource(
+    req.params.tokenPairId,
+    req.params.dataSourceId as DataSources,
+  );
   res.status(204).send();
 }
