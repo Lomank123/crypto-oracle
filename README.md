@@ -64,19 +64,8 @@ git clone https://github.com/Lomank123/crypto-oracle.git
 cp .env.sample .env
 ```
 
-- Create docker network:
 
-```shell
-docker network create oracle-network
-```
-
-- Build and up the containers:
-
-```shell
-docker compose up -d --build
-```
-
-## Installation (k8s)
+### k8s setup
 
 - Create namespace:
 
@@ -88,6 +77,12 @@ kubectl create namespace oracle
 
 ```shell
 kubectl create configmap oracle-config --from-env-file=.env --namespace=oracle
+```
+
+- Build the containers:
+
+```shell
+docker compose build
 ```
 
 - Start:
@@ -104,10 +99,22 @@ kubectl get svc -n oracle
 ```
 
 
-## Run
+### Docker Compose setup
+
+- Create docker network:
+
+```shell
+docker network create oracle-network
+```
+
+- Build and up the containers:
+
+```shell
+docker compose up -d --build
+```
 
 
-### Locally
+### Local setup
 
 - Install all packages:
 
