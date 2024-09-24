@@ -196,5 +196,5 @@ kubectl create configmap oracle-config --from-env-file=.env --namespace=oracle
 - Apply:
 
 ```shell
-kubectl apply -f /k8s
+kubectl apply -f k8s
 ```
