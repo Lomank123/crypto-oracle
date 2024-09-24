@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: oracle-redis
+  namespace: oracle
+  labels:
+    app: oracle-redis
+spec:
+  containers:
+    - name: oracle-redis
+      image: redis/redis-stack-server
+      ports:
+        - containerPort: 6378
+      envFrom:
+        - configMapRef:
+            name: oracle-config

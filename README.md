@@ -178,3 +178,23 @@ Response example:
 - https://academy.binance.com/en/glossary/centralized-exchange
 - https://chain.link/education/blockchain-oracles
 - https://www.immunebytes.com/blog/what-are-oracle-manipulation-attacks-in-blockchain/
+
+## kubectl
+
+- Create `namespace`:
+
+```shell
+kubectl create namespace oracle
+```
+
+- Create `ConfigMap`:
+
+```shell
+kubectl create configmap oracle-config --from-env-file=.env --namespace=oracle
+```
+
+- Apply:
+
+```shell
+kubectl apply -f /k8s
+```

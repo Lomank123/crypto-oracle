@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: oracle-api
+  namespace: oracle
+  labels:
+    app: oracle-api
+spec:
+  containers:
+    - name: oracle-api
+      image: lomank/oracle-api:1.0.0
+      command: ["npm", "start"]
+      envFrom:
+        - configMapRef:
+            name: oracle-config
+      ports:
+        - containerPort: 3033

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: oracle-db
+  namespace: oracle
+  labels:
+    app: oracle-db
+spec:
+  containers:
+    - name: oracle-db
+      image: lomank/oracle-db:1.0.0
+      ports:
+        - containerPort: 27022
+      envFrom:
+        - configMapRef:
+            name: oracle-config
