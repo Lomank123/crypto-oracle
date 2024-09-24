@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
+  namespace: oracle
   name: oracle-api
   labels:
     app: oracle-api

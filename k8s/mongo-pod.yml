@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
+  namespace: oracle
   name: oracle-db
   labels:
     app: oracle-db
@@ -13,3 +14,10 @@ spec:
       envFrom:
         - configMapRef:
             name: oracle-config
+      volumeMounts:
+        - mountPath: /data/db
+          name: oracle-db-storage
+  volumes:
+    - name: oracle-db-storage
+      persistentVolumeClaim:
+        claimName: oracle-db-pvc
